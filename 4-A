@@ -1,0 +1,247 @@
+## eduardo aleajndro tuyu canche 
+## ferando angel nahuat caamal
+## luis angel balam gaspar
+#%% md
+
+**METODOS PARA LA SOLUCION DE PROBLEMAS DE DIFERENCIACION E INTEGRACION NUMERICA**
+
+#%% md
+
+**Metodo de simpson_caso general o compuesta**
+
+#%%
+
+import math
+## definir una función que realice las evaluaciones
+def fxi(x):
+    return (x)*(math.log(x))
+
+def pares(afxi):
+    s = len(afxi)
+    sumapar= sum([afxi[i] for i in  range(2,s-1) if i%2==0])
+    return sumapar
+
+def impares(afxi):
+    s =  len(afxi)
+    sumaimpar = sum([afxi[i] for i in  range(1,s-1) if i%2!=0])
+    return sumaimpar
+
+def Simpson(afxi,h):
+    #[operaciones for  if condicion]
+    #sum([])=>suma o un solo valor, escalar, 
+    s = len(afxi)
+    resul = (h/3) * (afxi[0]+afxi[s-1] + 2 * pares(afxi) + 4* impares(afxi))
+    return resul
+
+#%%
+
+def principal():
+    print("METODO DE SIMPSON")
+    n = int(input("Cantidad de intervalos: "))
+    a = float(input("Limite a: "))
+    b = float(input("Limite b: "))
+    h= (b-a)/n
+    rpar=int(n/2 - 1)
+    rimpar=int(n/2)
+    ## Comprension and generator
+    afxi = [fxi(a+i*h) for i in range(n+1)] #comprenssion
+    resultadosimpson = Simpson(afxi,h)
+    print("i", "\t xi", "\t fxi")
+    for i in range (n+1):
+        print(i, "\t",(a+i*h), "\t",afxi[i])
+    print("Resultado del 1° y ultimo dato")
+    print("i","\t fxi")
+    for i in range (1):
+        inicio=fxi(a+i*h)
+        final=fxi(a+(n+i)*h)
+        print(i, "\t", inicio)
+        print(i+n, "\t", final)
+    sumaif=inicio+final
+    print("La suma de los dos datos: ", sumaif)
+    for i in range(1):
+        print("Resultados de los pares")
+        print("i","\t fxi")
+    for i in range(1, n-1):
+        if (i%2==0):
+            print(i, "\t", fxi(a+i*h))
+    par=2*pares(afxi)
+    print("Sumatoria de resultado pares multiplicado por 2: ", par)
+    for i in range(1):
+        print("Resultados de los impares")
+        print("i","\t fxi")
+    for i in range(1, n):
+        if (i%2!=0):
+            print(i, "\t", fxi(a+i*h))
+    impar=4*impares(afxi)
+    print("Sumatoria de resultado impares multiplicado por 4: ", impar)
+    sumatotal=sumaif+par+impar
+    print("Sumatoria Total: ", sumatotal)
+    print("Resultado con el Metodo Simpson: ", resultadosimpson)
+
+#%%
+
+principal()
+
+#%%
+
+
+
+#%% md
+
+**Metodo de Trapecio _Caso general**
+
+#%%
+
+import numpy as np
+import math
+
+def fxi(x):
+    return (x) * (math.log(x))
+
+def arregloEvaluacion(n,a,h):
+    aevaluaciones = [fxi(a+i*h) for i in range(n+1)]
+    return aevaluaciones
+
+n = int(input("Cantidad de intervalos: "))
+a = float(input("Limite a: "))
+b = float(input("Limite b: "))
+h= (b-a)/n
+x = np.zeros([n+1])
+x[0] = a
+x[n] = b
+suma = 0
+afxi = arregloEvaluacion(n,a,h)
+for i in np.arange(1,n):
+    x[i] = x[i-1] + h
+    suma = suma + fxi(x [i])
+    
+print('{:^10}{:^10}{:^10}'.format('i','xi','fxi'))
+for i in range (n+1):
+        print('{:^10}{:^10.4f}{:^10.4f}'.format(i,(a+(i*h)), afxi[i]))
+
+print("Primer y ultimo resultado de la columna sumas")
+print('{:^10}{:^10}'.format('i','Sumas'))   
+for i in range(1):    
+    inicio=fxi(a+i*h)
+    final=fxi(a+(n+i)*h)
+    print('{:^10}{:^10.4f}'.format(i, inicio))
+    print('{:^10}{:^10.4f}'.format(i+n, final))
+k = inicio+final    
+
+for i in range(1):
+        print("Suma que se multiplica x2")
+        print('{:^10}{:^10}'.format('i','fxi'))
+for i in range(1, n):
+        if (i%2!=0):
+            print('{:^10}{:^10.4f}'.format(i, fxi(a + (i*h))))
+        else:
+            print('{:^10}{:^10.4f}'.format(i, fxi(a + (i*h))))
+        
+print("Suma: ", suma)
+            
+
+sum = (suma * 2) + k   
+Resultado = (h /2) * (fxi(x[0]) + 2 * suma + fxi(x[n]))
+print("El resultado es de la suma total es: ", sum)
+print("solucion: ", Resultado)    
+
+#%%
+
+
+
+#%% md
+
+**Metodo de simpson_caso base**
+
+
+#%%
+
+import math
+## definir una función que realice las evaluaciones
+def fxi(x):
+    return (x**3)*(math.e**x)
+
+def Simpson(afxi,h):
+    #[operaciones for  if condicion]
+    #sum([])=>suma o un solo valor, escalar, 
+    resultado = (h/3) * (afxi[0] + 4*afxi[1] + afxi[2])
+    return resultado
+
+def principal():
+    print("Cantidad de intervalos = 3")
+    a = float(input("Limite a: "))
+    b = float(input("Limite b: "))
+    h= (b-a)/2
+    ## Comprension and generator
+    afxi = [fxi(a+i*h) for i in range(5)] #comprenssion
+    resultadosimpson = Simpson(afxi,h)
+    print("METODO DE SIMPSON")
+    print("\t |i|", "\t |xi|", "\t |fxi|")
+    for i in range (3):
+        print("\t ",i, "\t",(a+i*h), "\t",afxi[i])
+    print("Resultado del primer y ultimo intervalo")
+    print("\n\t |i|","\t |fxi|")
+    primero=afxi[0]
+    medio=afxi[1]
+    ultimo=afxi[2] 
+    print("\t ",0, "\t", primero)
+    print("\t ",2, "\t", ultimo)
+    print("\n**Multiplicacion de ",medio,"por 4: ")
+    mult=4*medio
+    print("Resultado de la multiplicacion:", mult)
+    sumatotal=primero+ultimo+mult
+    print("Sumatoria Total: ", sumatotal)
+    print("Resultado con el Metodo Simpson: ", resultadosimpson)
+
+#%%
+
+principal()
+
+#%%
+
+
+
+#%% md
+
+**Metodo de trapecio_caso base**
+
+#%%
+
+import math
+## definir una función que realice las evaluaciones
+def fxi(x):
+    return (x**3)*(math.e**x)
+
+def Trapecio(afxi,h):
+    s = len(afxi)
+#     suma = sum([afxi[i] for i in  range(1,s-1)])
+    resultado = (h/2) * (afxi[0]+afxi[1])
+    return resultado
+
+def principal():
+    print("Cantidad de intervalos: 2")
+    a = float(input("Limite a: "))
+    b = float(input("Limite b: "))
+    h= b-a
+    ## Comprension and generator
+    afxi = [fxi(a+i*h) for i in range(2)] #comprenssion
+    resultadotrapecio = Trapecio(afxi,h)
+    print("METODO DE TRAPECIO")
+    print("\t |i|", "\t |xi|", "\t |fxi|")
+    for i in range (2):
+        print("\t ",i, "\t",(a+i*h), "\t",afxi[i])
+    print("Resultado del primer y ultimo intervalo")
+    print("\n\t |i|","\t |fxi|")
+    primero=afxi[0]
+    ultimo=afxi[1] 
+    print("\t ",0, "\t", primero)
+    print("\t ",1, "\t", ultimo)
+    sumado=primero+ultimo
+    print("Sumatoria Total: ", sumado)
+    print("Resultado con el Metodo Trapecio: ", resultadotrapecio)
+
+#%%
+
+principal()
+
+#%%
